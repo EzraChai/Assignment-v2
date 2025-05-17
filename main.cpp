@@ -1,10 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cstdlib>
+#include <ctime>
 #include "BodyMetric.h"
 
 int main()
 {
+    srand(time(0)); // Seed for random number generation
     const int MAX_PERSONS = 50;
     BodyMetric bodymetrics[MAX_PERSONS];
 
@@ -50,15 +53,16 @@ int main()
 
     // TODO: Add a function to suggest a diet and workout plan based on the goal
     int userSelection = 0;
-    while (userSelection != 6)
+    while (userSelection != 7)
     {
         std::cout << "------------ Menu ------------" << std::endl;
         std::cout << "1. View Profile" << std::endl;
-        std::cout << "2. Suggest a plan" << std::endl;
-        std::cout << "3. Workout calculation" << std::endl;
-        std::cout << "4. Diet " << std::endl;
-        std::cout << "5. Edit Profile" << std::endl;
-        std::cout << "6. Exit" << std::endl;
+        std::cout << "2. Suggest a Plan" << std::endl;
+        std::cout << "3. Workout Calculation" << std::endl;
+        std::cout << "4. Generate Daily Meal Plan" << std::endl;
+        std::cout << "5. Diet Calculation" << std::endl;
+        std::cout << "6. Edit profile" << std::endl;
+        std::cout << "7. Exit" << std::endl;
         std::cout << "Select an option: ";
         std::cin >> userSelection;
 
@@ -74,9 +78,12 @@ int main()
             bodymetrics[counter].workoutCalculation();
             break;
         case 4:
-            bodymetrics[counter].dietCalculation();
+            bodymetrics[counter].generateDailyMealsPlan();
             break;
         case 5:
+            bodymetrics[counter].dietCalculation();
+            break;
+        case 6:
             bodymetrics[counter].createBodyMetric(name);
             std::cout << "Profile updated successfully!" << std::endl;
             break;

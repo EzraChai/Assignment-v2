@@ -26,10 +26,12 @@ public:
 
     void loadWorkoutsAndDietPlans();
 
-    void workoutCalculation() const;
+    void generateDailyMealsPlan() const;
 
     bool isBurnValidForGender(std::string, int) const;
+    bool isValidDailyCalories(std::string, int) const;
 
+    void workoutCalculation() const;
     void dietCalculation() const;
 };
 

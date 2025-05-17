@@ -87,6 +87,37 @@ void BodyMetric::loadWorkoutsAndDietPlans()
         dietFile.close();
     }
 }
+void BodyMetric::generateDailyMealsPlan() const
+{
+    int breakfastIndex[2] = {0, 4};
+    int lunchIndex[2] = {1, 5};
+    int dinnerIndex[2] = {2, 6};
+    int snackIndex[2] = {3, 7};
+
+    int generatedList[4] = {0};
+    Diet totalDiet = Diet();
+    do
+    {
+        totalDiet = Diet();
+        generatedList[0] = breakfastIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[0]];
+        generatedList[1] = lunchIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[1]];
+        generatedList[2] = dinnerIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[2]];
+        generatedList[3] = snackIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[3]];
+    } while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
+             (getGender() == "F" && totalDiet.getCalories() < 1200));
+
+    std::cout << "------------ Daily Meal Plan ------------" << std::endl;
+    std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
+    for (int i = 0; i < 4; i++)
+    {
+        std::cout << std::setw(20) << diet[generatedList[i]].getMealType() << std::setw(30) << diet[generatedList[i]].getFood() << std::setw(20) << diet[generatedList[i]].getCalories() << std::endl;
+    }
+    std::cout << "Total calories: " << totalDiet.getCalories() << std::endl;
+}
 
 void BodyMetric::displayProfileInfo() const
 {
@@ -166,6 +197,15 @@ void BodyMetric::workoutCalculation() const
     }
 }
 
+bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) const
+{
+    if (gender == "F")
+        return totalCalories >= 1200;
+    if (gender == "M")
+        return totalCalories >= 1500;
+    return false;
+}
+
 void BodyMetric::dietCalculation() const
 {
     int dietCount = 0;
@@ -190,12 +230,37 @@ void BodyMetric::dietCalculation() const
         std::cin >> dietChoice[i];
     }
     std::cout << "\n\n------------ Diet Summary ------------" << std::endl;
-    std::cout << std::setw(20) << "Meal Type" << std::setw(20) << "Food" << std::setw(20) << "Calories" << std::endl;
+    std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
     Diet dietOfTheDay;
     for (int i = 0; i < dietCount; i++)
     {
         int dietIndex = dietChoice[i] - 1;
         dietOfTheDay = dietOfTheDay + diet[dietIndex];
-        std::cout << std::setw(20) << diet[dietIndex].getMealType() << std::setw(30) << diet[dietIndex].getFood() << std::setw(20) << dietOfTheDay.getCalories() << std::endl;
+        std::cout << std::setw(20) << diet[dietIndex].getMealType() << std::setw(30) << diet[dietIndex].getFood() << std::setw(20) << diet[dietIndex].getCalories() << std::endl;
+    }
+    std::cout << "Total calories consumed in a day: " << dietOfTheDay.getCalories() << std::endl;
+
+    if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
+    {
+        std::cout << "Calorie intake not within recommended limit for gender.\n";
+
+        if (getGender() == "F")
+        {
+            if (totalCalories < 1200)
+                std::cout << "Suggestion: Add another snack.\n";
+            else
+                std::cout << "Suggestion: Remove high-calorie item.\n";
+        }
+        else
+        {
+            if (totalCalories < 1500)
+                std::cout << "Suggestion: Add a heavier lunch.\n";
+            else
+                std::cout << "Suggestion: Replace dinner with something lighter.\n";
+        }
+    }
+    else
+    {
+        std::cout << "Calorie intake is appropriate for gender.\n";
     }
 }
