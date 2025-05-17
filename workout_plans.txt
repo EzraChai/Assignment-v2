@@ -1,0 +1,10 @@
+Running,3,12
+Swimming,2,10
+Cycling,3,11
+Yoga,1,4
+HIIT,4,14
+Walking,1,5
+Boxing,3,13
+Jump rope,2,10
+Pilates,2,6
+Strength training,3,9

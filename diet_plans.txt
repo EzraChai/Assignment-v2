@@ -1,0 +1,8 @@
+Breakfast,Oatmeal with banana,300
+Lunch,Grilled chicken salad,500
+Dinner,Salmon and veggies,450
+Snack,Yogurt with nuts,200
+Breakfast,Scrambled eggs and toast,350
+Lunch,Tuna sandwich,450
+Dinner,Spaghetti with meat sauce,600
+Snack,Fruit smoothie,250
