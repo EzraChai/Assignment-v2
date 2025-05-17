@@ -1,1 +1,11 @@
-Chai 20 male 70.0 1.74 lose
+Alice 25 F 65.0 1.70 lose
+Bob 30 M 78.0 1.80 maintain
+Charlie 28 M 85.0 1.75 gain
+Diana 22 F 55.0 1.60 lose
+Ethan 35 M 90.0 1.82 maintain
+Fiona 29 F 60.0 1.65 gain
+George 31 M 88.0 1.78 lose
+Hannah 26 F 58.0 1.68 gain
+Ian 33 M 83.0 1.76 maintain
+Jenna 27 F 62.0 1.64 lose
+Ezra 20 M 70.0 1.73 lose

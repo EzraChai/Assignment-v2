@@ -37,7 +37,14 @@ void BodyMetric::createBodyMetric(std::string name)
     // Set the values in the Person class
     this->setName(name);
     this->setAge(age);
-    this->setGender(gender);
+    if (gender == "male")
+    {
+        this->setGender("M");
+    }
+    else if (gender == "female")
+    {
+        this->setGender("F");
+    }
     this->setWeight(weight);
     this->setHeight(height);
     this->goalType = goalType;
@@ -96,7 +103,24 @@ void BodyMetric::generateDailyMealsPlan() const
 
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
-    do
+    // do
+    // {
+    //     totalDiet = Diet();
+    //     generatedList[0] = breakfastIndex[rand() % 2];
+    //     totalDiet = totalDiet + diet[generatedList[0]];
+    //     generatedList[1] = lunchIndex[rand() % 2];
+    //     totalDiet = totalDiet + diet[generatedList[1]];
+    //     generatedList[2] = dinnerIndex[rand() % 2];
+    //     totalDiet = totalDiet + diet[generatedList[2]];
+    //     generatedList[3] = snackIndex[rand() % 2];
+    //     totalDiet = totalDiet + diet[generatedList[3]];
+    // } while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
+    //          (getGender() == "F" && totalDiet.getCalories() < 1200));
+
+    std::cout << getGender() << std::endl;
+    std::cout << totalDiet.getCalories() << std::endl;
+    while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
+           (getGender() == "F" && totalDiet.getCalories() < 1200))
     {
         totalDiet = Diet();
         generatedList[0] = breakfastIndex[rand() % 2];
@@ -107,8 +131,7 @@ void BodyMetric::generateDailyMealsPlan() const
         totalDiet = totalDiet + diet[generatedList[2]];
         generatedList[3] = snackIndex[rand() % 2];
         totalDiet = totalDiet + diet[generatedList[3]];
-    } while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
-             (getGender() == "F" && totalDiet.getCalories() < 1200));
+    }
 
     std::cout << "------------ Daily Meal Plan ------------" << std::endl;
     std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;

@@ -27,11 +27,10 @@ int main()
         while (userFile >> name >> age >> gender >> weight >> height >> goal)
         {
             bodymetrics[personCount] = BodyMetric(name, age, gender, weight, height, goal);
+            personCount++;
         }
-        personCount++;
         userFile.close();
     }
-
     std::cout << "------------ My Health Journey ------------" << std::endl;
     std::cout << "What is your name? ";
     std::cin >> name;
@@ -47,8 +46,8 @@ int main()
     }
     if (personCount == counter && counter < MAX_PERSONS)
     {
-        counter++;
         bodymetrics[counter].createBodyMetric(name);
+        personCount++;
     }
 
     // TODO: Add a function to suggest a diet and workout plan based on the goal
@@ -86,6 +85,9 @@ int main()
         case 6:
             bodymetrics[counter].createBodyMetric(name);
             std::cout << "Profile updated successfully!" << std::endl;
+            break;
+        case 7:
+            std::cout << "Goodbye!" << std::endl;
             break;
         default:
             std::cout << "Invalid selection, please try again." << std::endl;
