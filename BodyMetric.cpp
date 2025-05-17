@@ -78,10 +78,9 @@ void BodyMetric::loadWorkoutsAndDietPlans()
             std::string mealType;
             std::string food;
             std::string calories;
-            std::getline(workoutFile, mealType, ',');
-            std::getline(workoutFile, food, ',');
-            std::getline(workoutFile, calories);
-            // >> mealType >> food >> calories
+            std::getline(dietFile, mealType, ',');
+            std::getline(dietFile, food, ',');
+            std::getline(dietFile, calories);
             diet[i] = Diet(mealType, food, std::stoi(calories));
             i++;
         }
@@ -153,6 +152,7 @@ void BodyMetric::workoutCalculation() const
         totalCaloriesBurned += caloriesBurned;
         std::cout << std::setw(20) << workout[workoutIndex].getWorkoutType() << std::setw(20) << duration << std::setw(20) << caloriesBurned << std::endl;
     }
+
     std::cout << "Total Calories Burned in a day: " << totalCaloriesBurned << std::endl;
 
     if (isBurnValidForGender(getGender(), totalCaloriesBurned))
@@ -163,5 +163,39 @@ void BodyMetric::workoutCalculation() const
     {
         std::cout << "You have exceeded the recommended daily calorie burn which is " << ((getGender() == "M") ? "500" : "400") << " calories!" << std::endl;
         std::cout << std::endl;
+    }
+}
+
+void BodyMetric::dietCalculation() const
+{
+    int dietCount = 0;
+    int totalCalories = 0;
+
+    std::cout << "------------ Diet Calculation ------------" << std::endl;
+    std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
+    // Display all diets
+    for (int i = 0; i < MAX_DIETS; i++)
+    {
+        std::cout << std::setw(20) << diet[i].getMealType() << std::setw(30) << diet[i].getFood() << std::setw(20) << diet[i].getCalories() << std::endl;
+        // diet[i].displayDiet();
+    }
+    std::cout << "Enter the total number of meals you had today: ";
+    std::cin >> dietCount;
+
+    int dietChoice[dietCount];
+
+    std::cout << "Enter the meal indexs (1 to " << MAX_DIETS << "): " << std::endl;
+    for (int i = 0; i < dietCount; i++)
+    {
+        std::cin >> dietChoice[i];
+    }
+    std::cout << "\n\n------------ Diet Summary ------------" << std::endl;
+    std::cout << std::setw(20) << "Meal Type" << std::setw(20) << "Food" << std::setw(20) << "Calories" << std::endl;
+    Diet dietOfTheDay;
+    for (int i = 0; i < dietCount; i++)
+    {
+        int dietIndex = dietChoice[i] - 1;
+        dietOfTheDay = dietOfTheDay + diet[dietIndex];
+        std::cout << std::setw(20) << diet[dietIndex].getMealType() << std::setw(30) << diet[dietIndex].getFood() << std::setw(20) << dietOfTheDay.getCalories() << std::endl;
     }
 }

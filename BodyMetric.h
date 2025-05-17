@@ -7,8 +7,8 @@
 #include <string>
 
 const int MAX_WORKOUTS = 10;
-const int MAX_DIETS = 9;
-class BodyMetric: public Person
+const int MAX_DIETS = 8;
+class BodyMetric : public Person
 {
 private:
     std::string goalType;
@@ -17,18 +17,20 @@ private:
 
 public:
     BodyMetric();
-    BodyMetric(std::string, int, std::string, double,double, std::string);
+    BodyMetric(std::string, int, std::string, double, double, std::string);
 
     void createBodyMetric(std::string);
     std::string getGoalType() const;
     // void suggestPlan();
     void displayProfileInfo() const;
-   
+
     void loadWorkoutsAndDietPlans();
 
     void workoutCalculation() const;
 
     bool isBurnValidForGender(std::string, int) const;
+
+    void dietCalculation() const;
 };
 
 #endif

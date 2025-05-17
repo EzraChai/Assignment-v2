@@ -3,7 +3,8 @@
 #include <iomanip>
 #include "BodyMetric.h"
 
-int main(){
+int main()
+{
     const int MAX_PERSONS = 50;
     BodyMetric bodymetrics[MAX_PERSONS];
 
@@ -18,9 +19,11 @@ int main(){
     std::string goal;
 
     int personCount = 0;
-    if (userFile) {
-        while (userFile >> name >> age >> gender >> weight >> height >> goal) {
-            bodymetrics[personCount] = BodyMetric(name, age, gender, weight, height, goal); 
+    if (userFile)
+    {
+        while (userFile >> name >> age >> gender >> weight >> height >> goal)
+        {
+            bodymetrics[personCount] = BodyMetric(name, age, gender, weight, height, goal);
         }
         personCount++;
         userFile.close();
@@ -45,39 +48,40 @@ int main(){
         bodymetrics[counter].createBodyMetric(name);
     }
 
-    //TODO: Add a function to suggest a diet and workout plan based on the goal
+    // TODO: Add a function to suggest a diet and workout plan based on the goal
     int userSelection = 0;
-    while(userSelection != 5)
+    while (userSelection != 6)
     {
         std::cout << "------------ Menu ------------" << std::endl;
         std::cout << "1. View Profile" << std::endl;
         std::cout << "2. Suggest a plan" << std::endl;
         std::cout << "3. Workout calculation" << std::endl;
-        std::cout << "4. Diet ";
-        std::cout << "4. Edit Profile" << std::endl;
-        std::cout << "5. Exit" << std::endl;
+        std::cout << "4. Diet " << std::endl;
+        std::cout << "5. Edit Profile" << std::endl;
+        std::cout << "6. Exit" << std::endl;
         std::cout << "Select an option: ";
         std::cin >> userSelection;
 
-        switch(userSelection)
+        switch (userSelection)
         {
-            case 1:
-                bodymetrics[counter].displayProfileInfo();
-                break;
-            case 2:
-                // bodymetrics[counter].suggestPlan();
-                break;
-            case 3:
-                bodymetrics[counter].workoutCalculation();
-                break;
-            case 4:
-                bodymetrics[counter].createBodyMetric(name);
-                std::cout << "Profile updated successfully!" << std::endl;
-                break;
-            case 5:
-                break;
-            default:
-                std::cout << "Invalid selection, please try again." << std::endl;
+        case 1:
+            bodymetrics[counter].displayProfileInfo();
+            break;
+        case 2:
+            // bodymetrics[counter].suggestPlan();
+            break;
+        case 3:
+            bodymetrics[counter].workoutCalculation();
+            break;
+        case 4:
+            bodymetrics[counter].dietCalculation();
+            break;
+        case 5:
+            bodymetrics[counter].createBodyMetric(name);
+            std::cout << "Profile updated successfully!" << std::endl;
+            break;
+        default:
+            std::cout << "Invalid selection, please try again." << std::endl;
         }
     }
 
@@ -85,9 +89,9 @@ int main(){
     if (userFile)
     {
         counter = 0;
-        while(counter < personCount)
+        while (counter < personCount)
         {
-            if(counter != 0)
+            if (counter != 0)
             {
                 userFile << '\n';
             }

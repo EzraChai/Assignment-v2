@@ -4,15 +4,20 @@
 
 class Diet
 {
-    private:
-        std::string mealType; // e.g., breakfast, lunch, dinner
-        std::string food; // e.g., salad, chicken, rice
-        int calories; // calories in the food item
-    public:
-        Diet();
-        Diet(std::string, std::string, int);
-        void displayDiet() const;
-        Diet operator +(const Diet& otherDiet) const;
+private:
+    std::string mealType; // e.g., breakfast, lunch, dinner
+    std::string food;     // e.g., salad, chicken, rice
+    int calories;         // calories in the food item
+public:
+    Diet();
+    Diet(std::string, std::string, int);
+    std::string getMealType() const;
+    std::string getFood() const;
+    int getCalories() const;
+
+    void displayDiet() const;
+
+    Diet operator+(const Diet &otherDiet) const;
 };
 
 #endif
