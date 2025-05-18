@@ -18,21 +18,59 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Age: ";
     std::cin >> age;
 
+    while (age <= 0 || age > 120)
+    {
+        std::cout << "Invalid age. Please enter a valid age.";
+        std::cout << "Age: ";
+        std::cin >> age;
+    }
+
     std::string gender;
+
     std::cout << "Gender (male/female): ";
     std::cin >> gender;
+
+    while (gender != "male" && gender != "female")
+    {
+        std::cout << "Invalid gender. Please enter only male or female.";
+        std::cout << "Gender (male/female): ";
+        std::cin >> gender;
+    }
 
     double weight;
     std::cout << "Weight (kg): ";
     std::cin >> weight;
 
+    // Validate weight input
+    while (weight <= 0)
+    {
+        std::cout << "Invalid weight. Please enter a valid weight.";
+        std::cout << "Weight (kg): ";
+        std::cin >> weight;
+    }
+    // Validate height input
     double height;
     std::cout << "Height (m): ";
     std::cin >> height;
 
+    while (height <= 0)
+    {
+        std::cout << "Invalid height. Please enter a valid height.";
+        std::cout << "Height (m): ";
+        std::cin >> height;
+    }
+
+    // TODO: Add validation for goal type input
     std::string goalType;
     std::cout << "Goal Type (lose, maintain, gain): ";
     std::cin >> goalType;
+
+    while (goalType != "lose" && goalType != "maintain" && goalType != "gain")
+    {
+        std::cout << "Invalid goal type. Please enter only lose, maintain or gain.";
+        std::cout << "Goal Type (lose, maintain, gain): ";
+        std::cin >> goalType;
+    }
 
     // Set the values in the Person class
     this->setName(name);
@@ -103,19 +141,6 @@ void BodyMetric::generateDailyMealsPlan() const
 
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
-    // do
-    // {
-    //     totalDiet = Diet();
-    //     generatedList[0] = breakfastIndex[rand() % 2];
-    //     totalDiet = totalDiet + diet[generatedList[0]];
-    //     generatedList[1] = lunchIndex[rand() % 2];
-    //     totalDiet = totalDiet + diet[generatedList[1]];
-    //     generatedList[2] = dinnerIndex[rand() % 2];
-    //     totalDiet = totalDiet + diet[generatedList[2]];
-    //     generatedList[3] = snackIndex[rand() % 2];
-    //     totalDiet = totalDiet + diet[generatedList[3]];
-    // } while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
-    //          (getGender() == "F" && totalDiet.getCalories() < 1200));
 
     std::cout << getGender() << std::endl;
     std::cout << totalDiet.getCalories() << std::endl;
@@ -174,7 +199,7 @@ void BodyMetric::workoutCalculation() const
     int totalCaloriesBurned = 0;
 
     std::cout << "------------ Workout Calculation ------------" << std::endl;
-    std::cout << std::setw(20) << "Workout index" << std::setw(20) << "Workout Type" << std::setw(20) << "Intensity" << std::setw(20) << "Calories Burned/Min" << std::endl;
+    std::cout << std::setw(8) << "Workout" << std::setw(20) << "Workout Type" << std::setw(20) << "Intensity" << std::setw(20) << "Calories Burned/Min" << std::endl;
     // Display all workouts
     for (int i = 0; i < MAX_WORKOUTS; i++)
     {
@@ -236,11 +261,11 @@ void BodyMetric::dietCalculation() const
     int totalCalories = 0;
 
     std::cout << "------------ Diet Calculation ------------" << std::endl;
-    std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
+    std::cout << std::setw(8) << "Meal" << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
     // Display all diets
     for (int i = 0; i < MAX_DIETS; i++)
     {
-        std::cout << std::setw(20) << diet[i].getMealType() << std::setw(30) << diet[i].getFood() << std::setw(20) << diet[i].getCalories() << std::endl;
+        std::cout << std::setw(8) << (i + 1) << std::setw(20) << diet[i].getMealType() << std::setw(30) << diet[i].getFood() << std::setw(20) << diet[i].getCalories() << std::endl;
         // diet[i].displayDiet();
     }
     std::cout << "Enter the total number of meals you had today: ";
@@ -323,6 +348,12 @@ void BodyMetric::updateProfile()
             std::cout << "Current age: " << getAge() << std::endl;
             std::cout << "Enter new age: ";
             std::cin >> age;
+            while (age <= 0 || age > 120)
+            {
+                std::cout << "Invalid age. Please enter a valid age.";
+                std::cout << "Enter new age: ";
+                std::cin >> age;
+            }
             setAge(age);
             break;
         }
@@ -332,6 +363,12 @@ void BodyMetric::updateProfile()
             std::cout << "Current weight: " << getWeight() << std::endl;
             std::cout << "Enter new weight (kg): ";
             std::cin >> weight;
+            while (weight <= 0)
+            {
+                std::cout << "Invalid weight. Please enter a valid weight.";
+                std::cout << "Enter new weight (kg): ";
+                std::cin >> weight;
+            }
             setWeight(weight);
             break;
         }
@@ -341,6 +378,12 @@ void BodyMetric::updateProfile()
             std::cout << "Current height: " << getHeight() << std::endl;
             std::cout << "Enter new height (m): ";
             std::cin >> height;
+            while (height <= 0)
+            {
+                std::cout << "Invalid height. Please enter a valid height.";
+                std::cout << "Enter new height (m): ";
+                std::cin >> height;
+            }
             setHeight(height);
             break;
         }
@@ -350,6 +393,12 @@ void BodyMetric::updateProfile()
             std::cout << "Current goal: " << goalType << std::endl;
             std::cout << "Enter new goal (lose/maintain/gain): ";
             std::cin >> goal;
+            while (goal != "lose" && goal != "maintain" && goal != "gain")
+            {
+                std::cout << "Invalid goal type. Please enter only lose, maintain or gain.";
+                std::cout << "Enter new goal (lose/maintain/gain): ";
+                std::cin >> goal;
+            }
             goalType = goal;
             break;
         }
