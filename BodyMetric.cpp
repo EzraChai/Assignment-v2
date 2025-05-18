@@ -147,6 +147,7 @@ void BodyMetric::displayProfileInfo() const
     std::cout << "------------ Profile Information ------------" << std::endl;
     Person::displayPerson();
     std::cout << "Goal Type: " << goalType << std::endl;
+    std::cout << std::endl;
 }
 
 std::string BodyMetric::getGoalType() const
@@ -291,64 +292,76 @@ void BodyMetric::dietCalculation() const
 void BodyMetric::updateProfile()
 {
     // Ezra 20 M 70.0 1.73 lose
-    std::cout << "------------ Update Profile ------------" << std::endl;
-    std::cout << "1. Name" << std::endl;
-    std::cout << "2. Age" << std::endl;
-    std::cout << "3. Weight" << std::endl;
-    std::cout << "4. Height" << std::endl;
-    std::cout << "5. Goal" << std::endl;
-    std::cout << "6. Exit" << std::endl;
-    std::cout << "Select an option to update: ";
     int choice;
-    std::cin >> choice;
-    switch (choice)
+
+    while (choice != 6)
     {
-    case 1:
-    {
-        std::string name;
-        std::cout << "Enter new name: ";
-        std::cin >> name;
-        setName(name);
-        break;
+
+        std::cout << "------------ Update Profile ------------" << std::endl;
+        std::cout << "1. Name" << std::endl;
+        std::cout << "2. Age" << std::endl;
+        std::cout << "3. Weight" << std::endl;
+        std::cout << "4. Height" << std::endl;
+        std::cout << "5. Goal" << std::endl;
+        std::cout << "6. Exit" << std::endl;
+        std::cout << "Select an option to update: ";
+        std::cin >> choice;
+        switch (choice)
+        {
+        case 1:
+        {
+            std::string name;
+            std::cout << "Current name: " << getName() << std::endl;
+            std::cout << "Enter new name: ";
+            std::cin >> name;
+            setName(name);
+            break;
+        }
+        case 2:
+        {
+            int age;
+            std::cout << "Current age: " << getAge() << std::endl;
+            std::cout << "Enter new age: ";
+            std::cin >> age;
+            setAge(age);
+            break;
+        }
+        case 3:
+        {
+            double weight;
+            std::cout << "Current weight: " << getWeight() << std::endl;
+            std::cout << "Enter new weight (kg): ";
+            std::cin >> weight;
+            setWeight(weight);
+            break;
+        }
+        case 4:
+        {
+            double height;
+            std::cout << "Current height: " << getHeight() << std::endl;
+            std::cout << "Enter new height (m): ";
+            std::cin >> height;
+            setHeight(height);
+            break;
+        }
+        case 5:
+        {
+            std::string goal;
+            std::cout << "Current goal: " << goalType << std::endl;
+            std::cout << "Enter new goal (lose/maintain/gain): ";
+            std::cin >> goal;
+            goalType = goal;
+            break;
+        }
+        case 6:
+            return;
+        default:
+            std::cout << "Invalid choice. Please try again." << std::endl;
+            break;
+        }
+        std::cout << "Profile updated successfully!\n"
+                  << std::endl;
     }
-    case 2:
-    {
-        int age;
-        std::cout << "Enter new age: ";
-        std::cin >> age;
-        setAge(age);
-        break;
-    }
-    case 3:
-    {
-        double weight;
-        std::cout << "Enter new weight (kg): ";
-        std::cin >> weight;
-        setWeight(weight);
-        break;
-    }
-    case 4:
-    {
-        double height;
-        std::cout << "Enter new height (m): ";
-        std::cin >> height;
-        setHeight(height);
-        break;
-    }
-    case 5:
-    {
-        std::string goal;
-        std::cout << "Enter new goal (lose/maintain/gain): ";
-        std::cin >> goal;
-        goalType = goal;
-        break;
-    }
-    case 6:
-        return;
-    default:
-        std::cout << "Invalid choice. Please try again." << std::endl;
-        break;
-    }
-    std::cout << "Profile updated successfully!" << std::endl;
+
     return;
 }
