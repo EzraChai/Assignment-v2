@@ -60,7 +60,7 @@ int main()
         std::cout << "3. Workout Calculation" << std::endl;
         std::cout << "4. Generate Daily Meal Plan" << std::endl;
         std::cout << "5. Diet Calculation" << std::endl;
-        std::cout << "6. Edit profile" << std::endl;
+        std::cout << "6. Update Profile" << std::endl;
         std::cout << "7. Exit" << std::endl;
         std::cout << "Select an option: ";
         std::cin >> userSelection;
@@ -83,8 +83,7 @@ int main()
             bodymetrics[counter].dietCalculation();
             break;
         case 6:
-            bodymetrics[counter].createBodyMetric(name);
-            std::cout << "Profile updated successfully!" << std::endl;
+            bodymetrics[counter].updateProfile();
             break;
         case 7:
             std::cout << "Goodbye!" << std::endl;

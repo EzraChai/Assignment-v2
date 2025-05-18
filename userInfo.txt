@@ -8,4 +8,4 @@ George 31 M 88.0 1.78 lose
 Hannah 26 F 58.0 1.68 gain
 Ian 33 M 83.0 1.76 maintain
 Jenna 27 F 62.0 1.64 lose
-Ezra 20 M 70.0 1.73 lose
+Ezra 20 M 68.0 1.73 lose

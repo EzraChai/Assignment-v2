@@ -33,6 +33,8 @@ public:
 
     void workoutCalculation() const;
     void dietCalculation() const;
+
+    void updateProfile();
 };
 
 #endif
