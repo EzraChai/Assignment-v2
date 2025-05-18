@@ -16,11 +16,11 @@ public:
     Person(std::string, int, std::string, double, double);
     ~Person();
 
-    void setName(std::string );
-    void setAge(int );
-    void setGender(std::string );
-    void setWeight(double );
-    void setHeight(double );
+    void setName(std::string);
+    void setAge(int);
+    void setGender(std::string);
+    void setWeight(double);
+    void setHeight(double);
 
     std::string getName() const;
     int getAge() const;
@@ -30,6 +30,10 @@ public:
 
     double calculateBMI() const;
     void displayPerson() const;
+
+    double calculateBMR() const;
+
+    friend void BMILeaderboard(const Person[]);
 };
 
 #endif

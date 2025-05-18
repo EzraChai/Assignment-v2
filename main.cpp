@@ -52,16 +52,17 @@ int main()
 
     // TODO: Add a function to suggest a diet and workout plan based on the goal
     int userSelection = 0;
-    while (userSelection != 7)
+    while (userSelection != 8)
     {
         std::cout << "------------ Menu ------------" << std::endl;
         std::cout << "1. View Profile" << std::endl;
-        std::cout << "2. Suggest a Plan" << std::endl;
+        std::cout << "2. Estimate Calories Intake " << std::endl;
         std::cout << "3. Workout Calculation" << std::endl;
         std::cout << "4. Generate Daily Meal Plan" << std::endl;
         std::cout << "5. Diet Calculation" << std::endl;
-        std::cout << "6. Update Profile" << std::endl;
-        std::cout << "7. Exit" << std::endl;
+        std::cout << "6. Generate Workout Plan" << std::endl;
+        std::cout << "7. Update Profile" << std::endl;
+        std::cout << "8. Exit" << std::endl;
         std::cout << "Select an option: ";
         std::cin >> userSelection;
 
@@ -71,7 +72,7 @@ int main()
             bodymetrics[counter].displayProfileInfo();
             break;
         case 2:
-            // bodymetrics[counter].suggestPlan();
+            bodymetrics[counter].estimateCaloriesIntake();
             break;
         case 3:
             bodymetrics[counter].workoutCalculation();
@@ -83,9 +84,12 @@ int main()
             bodymetrics[counter].dietCalculation();
             break;
         case 6:
-            bodymetrics[counter].updateProfile();
+            bodymetrics[counter].generateWorkoutPlan();
             break;
         case 7:
+            bodymetrics[counter].updateProfile();
+            break;
+        case 8:
             std::cout << "Goodbye!" << std::endl;
             break;
         default:

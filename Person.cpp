@@ -15,12 +15,13 @@ Person::~Person() {}
 void Person::setName(std::string n)
 {
     name = n;
-}   
+}
 void Person::setAge(int a)
 {
     age = a;
 }
-void Person::setGender(std::string ge){
+void Person::setGender(std::string ge)
+{
     gender = ge;
 }
 void Person::setWeight(double w)
@@ -31,7 +32,6 @@ void Person::setHeight(double h)
 {
     height = h;
 }
-
 
 std::string Person::getName() const
 {
@@ -56,7 +56,27 @@ double Person::getHeight() const
 
 double Person::calculateBMI() const
 {
-    return (weight / (height * height));
+    if (height > 0)
+    {
+        return weight / (height * height);
+    }
+    else
+    {
+        return 0.0; // Avoid division by zero
+    }
+}
+
+double Person::calculateBMR() const
+{
+    if (gender == "M")
+    {
+        return 10 * weight + 6.25 * (height * 100) - 5 * age + 5; // Calculation BMR for Men
+    }
+    else if (gender == "F")
+    {
+        return 10 * weight + 6.25 * (height * 100) - 5 * age - 161; // Calculation BMR for Women
+    }
+    return 0.0;
 }
 
 void Person::displayPerson() const
