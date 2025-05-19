@@ -140,22 +140,8 @@ void BodyMetric::generateDailyMealsPlan() const
 
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
-    /*
     while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
            (getGender() == "F" && totalDiet.getCalories() < 1200))
-    {
-        totalDiet = Diet();
-        generatedList[0] = breakfastIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[0]];
-        generatedList[1] = lunchIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[1]];
-        generatedList[2] = dinnerIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[2]];
-        generatedList[3] = snackIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[3]];
-    }
-    */
-    while (totalDiet.getCalories() < calculateBMR())
     {
         totalDiet = Diet();
         generatedList[0] = breakfastIndex[rand() % 2];
@@ -259,9 +245,23 @@ void BodyMetric::workoutCalculation() const
 bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) const
 {
     if (gender == "F")
+    {
+        if (calculateBMR() >= 1200)
+        {
+            return totalCalories >= calculateBMR();
+        }
         return totalCalories >= 1200;
+    }
+
     if (gender == "M")
-        return totalCalories >= 1500;
+    {
+        if (calculateBMR() >= 1500)
+        {
+            return totalCalories >= calculateBMR();
+        }
+        return totalCalories >= calculateBMR();
+    }
+
     return false;
 }
 
@@ -325,26 +325,46 @@ void BodyMetric::dietCalculation() const
 
     if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
     {
-        std::cout << "Calorie intake not within recommended limit for gender.\n";
+        std::cout << "Calorie intake not within recommended limit.\n";
 
         if (getGender() == "F")
         {
-            if (totalCalories < calculateBMR())
-                std::cout << "Suggestion: Add another snack.\n";
+            if (calculateBMR() > 1200)
+            {
+                if (totalCalories < calculateBMR())
+                    std::cout << "Suggestion: Add another snack.\n";
+                else
+                    std::cout << "Suggestion: Remove high-calorie item.\n";
+            }
             else
-                std::cout << "Suggestion: Remove high-calorie item.\n";
+            {
+                if (totalCalories < 1200)
+                    std::cout << "Suggestion: Add another snack.\n";
+                else
+                    std::cout << "Suggestion: Remove high-calorie item.\n";
+            }
         }
         else
         {
-            if (totalCalories < calculateBMR())
-                std::cout << "Suggestion: Add a heavier lunch.\n";
+            if (calculateBMR() > 1200)
+            {
+                if (totalCalories < calculateBMR())
+                    std::cout << "Suggestion: Add another snack.\n";
+                else
+                    std::cout << "Suggestion: Remove high-calorie item.\n";
+            }
             else
-                std::cout << "Suggestion: Replace dinner with something lighter.\n";
+            {
+                if (totalCalories < 1200)
+                    std::cout << "Suggestion: Add another snack.\n";
+                else
+                    std::cout << "Suggestion: Remove high-calorie item.\n";
+            }
         }
     }
     else
     {
-        std::cout << "Calorie intake is appropriate for gender.\n";
+        std::cout << "Calorie intake is appropriate.\n";
     }
 }
 
@@ -499,6 +519,14 @@ void BodyMetric::estimateCaloriesIntake() const
     else if (getGoalType() == "gain")
     {
         tdee += 500;
+    }
+    if (getGender() == "M" && tdee < 1500)
+    {
+        tdee = 1500;
+    }
+    else if (getGender() == "F" && tdee < 1200)
+    {
+        tdee = 1200;
     }
 
     std::cout << "Your BMR is: " << calculateBMR() << " calories/day" << std::endl;
