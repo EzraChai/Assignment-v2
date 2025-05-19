@@ -8,6 +8,7 @@
 
 const int MAX_WORKOUTS = 10;
 const int MAX_DIETS = 8;
+
 class BodyMetric : public Person
 {
 private:

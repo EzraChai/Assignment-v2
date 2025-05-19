@@ -32,8 +32,6 @@ public:
     void displayPerson() const;
 
     double calculateBMR() const;
-
-    friend void BMILearderBoard(const Person[]);
 };
 
 #endif
