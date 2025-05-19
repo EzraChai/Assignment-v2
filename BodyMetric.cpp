@@ -142,8 +142,6 @@ void BodyMetric::generateDailyMealsPlan() const
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
 
-    std::cout << getGender() << std::endl;
-    std::cout << totalDiet.getCalories() << std::endl;
     while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
            (getGender() == "F" && totalDiet.getCalories() < 1200))
     {
