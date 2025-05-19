@@ -57,10 +57,10 @@ int main()
         std::cout << "------------ Menu ------------" << std::endl;
         std::cout << "1. View Profile" << std::endl;
         std::cout << "2. Estimate Calories Intake " << std::endl;
-        std::cout << "3. Workout Calculation" << std::endl;
-        std::cout << "4. Generate Daily Meal Plan" << std::endl;
-        std::cout << "5. Diet Calculation" << std::endl;
-        std::cout << "6. Generate Workout Plan" << std::endl;
+        std::cout << "3. Generate Workout Plan" << std::endl;
+        std::cout << "4. Workout Calculation" << std::endl;
+        std::cout << "5. Generate Daily Meal Plan" << std::endl;
+        std::cout << "6. Diet Calculation" << std::endl;
         std::cout << "7. Update Profile" << std::endl;
         std::cout << "8. Exit" << std::endl;
         std::cout << "Select an option: ";
@@ -75,16 +75,16 @@ int main()
             bodymetrics[counter].estimateCaloriesIntake();
             break;
         case 3:
-            bodymetrics[counter].workoutCalculation();
+            bodymetrics[counter].generateWorkoutPlan();
             break;
         case 4:
-            bodymetrics[counter].generateDailyMealsPlan();
+            bodymetrics[counter].workoutCalculation();
             break;
         case 5:
-            bodymetrics[counter].dietCalculation();
+            bodymetrics[counter].generateDailyMealsPlan();
             break;
         case 6:
-            bodymetrics[counter].generateWorkoutPlan();
+            bodymetrics[counter].dietCalculation();
             break;
         case 7:
             bodymetrics[counter].updateProfile();

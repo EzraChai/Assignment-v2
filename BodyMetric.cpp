@@ -467,8 +467,8 @@ void BodyMetric::estimateCaloriesIntake() const
         tdee += 500;
     }
 
-    std::cout << "Your BMR is: " << calculateBMR() << " Calories/day" << std::endl;
-    std::cout << "Your daily calories intake is: " << tdee << "Calories/day" << std::endl;
+    std::cout << "Your BMR is: " << calculateBMR() << " calories/day" << std::endl;
+    std::cout << "Your daily calories intake is: " << tdee << " calories/day" << std::endl;
     std::cout << std::endl;
 }
 
@@ -476,10 +476,10 @@ void BodyMetric::estimateCaloriesIntake() const
 void BodyMetric::generateWorkoutPlan() const
 {
     /*
-    Goal	Target Burn (Female)	Target Burn (Male)
-    Lose	350–400 kcal	450–500 kcal
-    Maintain	200–300 kcal	250–400 kcal
-    Gain	≤ 200 kcal	≤ 250 kcal
+    Goal	    Target Burn (Female)	Target Burn (Male)
+    Lose	    350–400 kcal	        450–500 kcal
+    Maintain	200–300 kcal	        250–400 kcal
+    Gain	    ≤ 200 kcal	            ≤ 250 kcal
     */
     std::cout << "------------ Daily Workout Plan ------------" << std::endl;
     std::cout << "Your goal is: " << goalType << std::endl;
