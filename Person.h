@@ -32,6 +32,8 @@ public:
     void displayPerson() const;
 
     double calculateBMR() const;
+
+    friend void displayComparisonBetweenPerson(const Person &person1, const Person &person2);
 };
 
 #endif
