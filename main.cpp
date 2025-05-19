@@ -50,7 +50,6 @@ int main()
         personCount++;
     }
 
-    // TODO: Add a function to suggest a diet and workout plan based on the goal
     int userSelection = 0;
     while (userSelection != 8)
     {

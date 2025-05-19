@@ -33,7 +33,7 @@ public:
 
     double calculateBMR() const;
 
-    friend void BMILeaderboard(const Person[]);
+    friend void BMILearderBoard(const Person[]);
 };
 
 #endif

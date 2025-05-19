@@ -60,7 +60,6 @@ void BodyMetric::createBodyMetric(std::string name)
         std::cin >> height;
     }
 
-    // TODO: Add validation for goal type input
     std::string goalType;
     std::cout << "Goal Type (lose, maintain, gain): ";
     std::cin >> goalType;
@@ -141,9 +140,22 @@ void BodyMetric::generateDailyMealsPlan() const
 
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
-
+    /*
     while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
            (getGender() == "F" && totalDiet.getCalories() < 1200))
+    {
+        totalDiet = Diet();
+        generatedList[0] = breakfastIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[0]];
+        generatedList[1] = lunchIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[1]];
+        generatedList[2] = dinnerIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[2]];
+        generatedList[3] = snackIndex[rand() % 2];
+        totalDiet = totalDiet + diet[generatedList[3]];
+    }
+    */
+    while (totalDiet.getCalories() < calculateBMR())
     {
         totalDiet = Diet();
         generatedList[0] = breakfastIndex[rand() % 2];
@@ -287,7 +299,7 @@ void BodyMetric::dietCalculation() const
     }
     std::cout << "Total calories consumed in a day: " << dietOfTheDay.getCalories() << std::endl;
 
-    if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
+    /*if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
     {
         std::cout << "Calorie intake not within recommended limit for gender.\n";
 
@@ -301,6 +313,30 @@ void BodyMetric::dietCalculation() const
         else
         {
             if (totalCalories < 1500)
+                std::cout << "Suggestion: Add a heavier lunch.\n";
+            else
+                std::cout << "Suggestion: Replace dinner with something lighter.\n";
+        }
+    }
+    else
+    {
+        std::cout << "Calorie intake is appropriate for gender.\n";
+    }*/
+
+    if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
+    {
+        std::cout << "Calorie intake not within recommended limit for gender.\n";
+
+        if (getGender() == "F")
+        {
+            if (totalCalories < calculateBMR())
+                std::cout << "Suggestion: Add another snack.\n";
+            else
+                std::cout << "Suggestion: Remove high-calorie item.\n";
+        }
+        else
+        {
+            if (totalCalories < calculateBMR())
                 std::cout << "Suggestion: Add a heavier lunch.\n";
             else
                 std::cout << "Suggestion: Replace dinner with something lighter.\n";
@@ -470,7 +506,6 @@ void BodyMetric::estimateCaloriesIntake() const
     std::cout << std::endl;
 }
 
-// TODO: Add logic to suggest workout plan based on goal type
 void BodyMetric::generateWorkoutPlan() const
 {
     /*
@@ -532,6 +567,7 @@ void BodyMetric::generateWorkoutPlan() const
 
     int caloriesBurned = 0;
     int *ptrWorkoutIndex = new int[workoutNum];
+    int *ptrWorkoutDuration = new int[workoutNum];
     std::cout << std::setw(20) << "Workout Type" << std::setw(20) << "Duration (min)" << std::setw(20) << "Calories Burned" << std::endl;
     // Generate random workout plan
     while (!(caloriesBurned >= minTargetBurn && caloriesBurned <= maxTargetBurn))
@@ -541,17 +577,17 @@ void BodyMetric::generateWorkoutPlan() const
         {
             int workoutIndex = rand() % MAX_WORKOUTS;
             int durationIndex = rand() % 3;
-            int durationValue = duration[durationIndex];
-            int caloriesBurnedValue = workout[workoutIndex].getCaloriesBurnedPerMinute() * durationValue;
+            int caloriesBurnedValue = workout[workoutIndex].getCaloriesBurnedPerMinute() * duration[durationIndex];
             caloriesBurned += caloriesBurnedValue;
             ptrWorkoutIndex[i] = workoutIndex;
+            ptrWorkoutDuration[i] = duration[durationIndex];
         }
     }
     for (int i = 0; i < workoutNum; i++)
     {
         int workoutIndex = ptrWorkoutIndex[i];
-        int caloriesBurnedValue = workout[workoutIndex].getCaloriesBurnedPerMinute() * duration[i];
-        std::cout << std::setw(20) << workout[workoutIndex].getWorkoutType() << std::setw(20) << duration[i] << std::setw(20) << caloriesBurnedValue << std::endl;
+        int caloriesBurnedValue = workout[workoutIndex].getCaloriesBurnedPerMinute() * ptrWorkoutDuration[i];
+        std::cout << std::setw(20) << workout[workoutIndex].getWorkoutType() << std::setw(20) << ptrWorkoutDuration[i] << std::setw(20) << caloriesBurnedValue << std::endl;
     }
     std::cout << "Total calories burned: " << caloriesBurned << std::endl;
 
