@@ -5,17 +5,25 @@
 #include <ctime>
 #include "BodyMetric.h"
 
+/*
+    Function prototype of the friend function
+*/
 void displayComparisonBetweenPerson(const Person &person1, const Person &person2);
 
 int main()
 {
-    srand(time(0)); // Seed for random number generation
+    // Seed for random number generation
+    srand(time(0));
+    // Constants of maximum persons are initialized
     const int MAX_PERSONS = 50;
+    // Array of bodymetrics is declared
     BodyMetric bodymetrics[MAX_PERSONS];
 
+    // Open the user information file for reading
     std::fstream userFile;
     userFile.open("userInfo.txt", std::ios::in);
 
+    // Variables are declared
     std::string name;
     int age;
     std::string gender;
@@ -24,6 +32,7 @@ int main()
     std::string goal;
 
     int personCount = 0;
+    // Read the file and stored into the array
     if (userFile)
     {
         while (userFile >> name >> age >> gender >> weight >> height >> goal)
@@ -33,11 +42,19 @@ int main()
         }
         userFile.close();
     }
+    else
+    {
+        // If the file cannot be opened, stop the program with error code.
+        std::cout << "Error opening file." << std::endl;
+        return 1;
+    }
+
     std::cout << "------------ My Health Journey ------------" << std::endl;
     std::cout << "What is your name? ";
     std::cin >> name;
 
     int personIndex = 0;
+    // Find user in the userinfo and prompt the user with welcoming message
     for (; personIndex < personCount; personIndex++)
     {
         if (bodymetrics[personIndex].getName() == name)
@@ -46,6 +63,7 @@ int main()
             break;
         }
     }
+    // If user is not found, register the user and write it into userinfo file.
     if (personCount == personIndex && personIndex < MAX_PERSONS)
     {
         bodymetrics[personIndex].createBodyMetric(name);
@@ -53,6 +71,7 @@ int main()
     }
 
     int userSelection = 0;
+    // Display the main menu in a loop unitl the user exits
     while (userSelection != 9)
     {
         std::cout << "------------ Menu ------------" << std::endl;
@@ -72,29 +91,35 @@ int main()
         switch (userSelection)
         {
         case 1:
+            // Display user profile
             bodymetrics[personIndex].displayProfileInfo();
             break;
         case 2:
+            // Estimate calories intake by user
             bodymetrics[personIndex].estimateCaloriesIntake();
             break;
         case 3:
+            // Generate workout plan based on the user needed
             bodymetrics[personIndex].generateWorkoutPlan();
             break;
         case 4:
+            // Calculate the workout calories burned
             bodymetrics[personIndex].workoutCalculation();
             break;
         case 5:
+            // Generate the daily meals plan based on the user needed
             bodymetrics[personIndex].generateDailyMealsPlan();
             break;
         case 6:
+            // Calculate the diet calories consumed
             bodymetrics[personIndex].dietCalculation();
             break;
         case 7:
         {
-
+            // Compare the body health with other user
             std::cout << "Enter the name of the person to compare with: ";
             std::cin >> otherName;
-
+            // Prompt user with error message ifthe user enter himself/herself
             if (otherName == bodymetrics[personIndex].getName())
             {
                 std::cout << "You cannot compare yourself." << std::endl;
@@ -111,6 +136,7 @@ int main()
                 }
             }
 
+            // Prompt user if the person is not found
             if (otherIndex == -1)
             {
                 std::cout << "Person not found!\n"
@@ -121,6 +147,7 @@ int main()
             break;
         }
         case 8:
+            // Update the profile of the user if needed
             bodymetrics[personIndex].updateProfile();
             break;
         case 9:

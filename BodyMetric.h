@@ -24,7 +24,6 @@ public:
     std::string getGoalType() const;
 
     void estimateCaloriesIntake() const;
-    void suggestWorkOutPlan() const;
 
     void displayProfileInfo() const;
 

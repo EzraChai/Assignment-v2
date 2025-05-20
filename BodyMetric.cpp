@@ -4,12 +4,22 @@
 #include <string>
 #include <fstream>
 
+/*
+    Default constructor
+*/
 BodyMetric::BodyMetric() : Person(), goalType("") {}
+
+/*
+    Overloading constructor
+*/
 BodyMetric::BodyMetric(std::string n, int a, std::string ge, double w, double h, std::string g) : Person(n, a, ge, w, h), goalType(g)
 {
     loadWorkoutsAndDietPlans();
 }
 
+/*
+    Create new record for body metric
+*/
 void BodyMetric::createBodyMetric(std::string name)
 {
     std::cout << "Creating body metric for [" << name << "]" << std::endl;
@@ -41,18 +51,19 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Weight (kg): ";
     std::cin >> weight;
 
-    // Validate weight input
+    // validate weight input
     while (weight <= 0)
     {
         std::cout << "Invalid weight. Please enter a valid weight.";
         std::cout << "Weight (kg): ";
         std::cin >> weight;
     }
-    // Validate height input
+
     double height;
     std::cout << "Height (m): ";
     std::cin >> height;
 
+    // validate height input
     while (height <= 0)
     {
         std::cout << "Invalid height. Please enter a valid height.";
@@ -64,6 +75,7 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Goal Type (lose, maintain, gain): ";
     std::cin >> goalType;
 
+    // validate gender input
     while (goalType != "lose" && goalType != "maintain" && goalType != "gain")
     {
         std::cout << "Invalid goal type. Please enter only lose, maintain or gain.";
@@ -89,6 +101,9 @@ void BodyMetric::createBodyMetric(std::string name)
     loadWorkoutsAndDietPlans();
 }
 
+/*
+    Load workout and diet plans from external data
+*/
 void BodyMetric::loadWorkoutsAndDietPlans()
 {
     std::ifstream workoutFile("workout_plans.txt");
@@ -131,6 +146,10 @@ void BodyMetric::loadWorkoutsAndDietPlans()
         dietFile.close();
     }
 }
+
+/*
+    Generate daily meal plans based on calories needed
+*/
 void BodyMetric::generateDailyMealsPlan() const
 {
     int breakfastIndex[2] = {0, 4};
@@ -143,6 +162,7 @@ void BodyMetric::generateDailyMealsPlan() const
     while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
            (getGender() == "F" && totalDiet.getCalories() < 1200))
     {
+        // generate the meals randomly
         totalDiet = Diet();
         generatedList[0] = breakfastIndex[rand() % 2];
         totalDiet = totalDiet + diet[generatedList[0]];
@@ -154,6 +174,7 @@ void BodyMetric::generateDailyMealsPlan() const
         totalDiet = totalDiet + diet[generatedList[3]];
     }
 
+    // To display meal plan generated
     std::cout << "------------ Daily Meal Plan ------------" << std::endl;
     std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
     for (int i = 0; i < 4; i++)
@@ -163,6 +184,9 @@ void BodyMetric::generateDailyMealsPlan() const
     std::cout << "Total calories: " << totalDiet.getCalories() << std::endl;
 }
 
+/*
+    Display personal profile
+*/
 void BodyMetric::displayProfileInfo() const
 {
     std::cout << "------------ Profile Information ------------" << std::endl;
@@ -176,6 +200,9 @@ std::string BodyMetric::getGoalType() const
     return goalType;
 }
 
+/*
+    Check if the total calories burned is valid based on the gender
+*/
 bool BodyMetric::isBurnValidForGender(std::string gender, int totalcaloriesBurned) const
 {
     if (gender == "F")
@@ -189,6 +216,9 @@ bool BodyMetric::isBurnValidForGender(std::string gender, int totalcaloriesBurne
     return false;
 }
 
+/*
+    Calculate workout calories burned
+*/
 void BodyMetric::workoutCalculation() const
 {
     int workoutCount = 0;
@@ -201,6 +231,7 @@ void BodyMetric::workoutCalculation() const
     {
         workout[i].displayWorkout(i);
     }
+
     std::cout << "Enter the total number of workouts you did today: ";
     std::cin >> workoutCount;
 
@@ -211,6 +242,12 @@ void BodyMetric::workoutCalculation() const
     for (int i = 0; i < workoutCount; i++)
     {
         std::cin >> workoutChoice[i];
+        // validate workout index input
+        while (workoutChoice[i] <= 0 || workoutChoice[i] > 10)
+        {
+            std::cout << "Invalid workout index. Please enter valid workout index: ";
+            std::cin >> workoutChoice[i];
+        }
     }
     std::cout << "Enter the duration of each workout in minutes: " << std::endl;
     for (int i = 0; i < workoutCount; i++)
@@ -242,6 +279,9 @@ void BodyMetric::workoutCalculation() const
     }
 }
 
+/*
+    Check if the total calories consumed is valid based on the gender and BMR
+*/
 bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) const
 {
     if (gender == "F")
@@ -264,7 +304,10 @@ bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) con
 
     return false;
 }
-
+/*
+    Calculate diet calories consumed
+    and check if it is valid based on the gender and BMR
+*/
 void BodyMetric::dietCalculation() const
 {
     int dietCount = 0;
@@ -276,18 +319,32 @@ void BodyMetric::dietCalculation() const
     for (int i = 0; i < MAX_DIETS; i++)
     {
         std::cout << std::setw(8) << (i + 1) << std::setw(20) << diet[i].getMealType() << std::setw(30) << diet[i].getFood() << std::setw(20) << diet[i].getCalories() << std::endl;
-        // diet[i].displayDiet();
     }
+    // Input the number of meals and validate the input
     std::cout << "Enter the total number of meals you had today: ";
     std::cin >> dietCount;
+    while (dietCount < 0)
+    {
+        std::cout << "Invalid number of meals.\n Please enter a valid number of meals: ";
+        std::cin >> dietCount;
+    }
 
+    // array to store the meal index
     int dietChoice[dietCount];
 
-    std::cout << "Enter the meal indexs (1 to " << MAX_DIETS << "): " << std::endl;
+    // validate and input meal index
+    std::cout << "Please enter the meal indexs (1 to " << MAX_DIETS << "): " << std::endl;
     for (int i = 0; i < dietCount; i++)
     {
         std::cin >> dietChoice[i];
+        while (dietChoice[i] <= 0 || dietChoice[i] >= MAX_DIETS)
+        {
+            std::cout << "Invalid meal index. Please enter valid meal index.";
+            std::cout << "Please enter the meal indexs (1 to " << MAX_DIETS << "): " << std::endl;
+            std::cin >> dietChoice[i];
+        }
     }
+    // Diet summary and calculate the total calories consumed in a day
     std::cout << "\n\n------------ Diet Summary ------------" << std::endl;
     std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
     Diet dietOfTheDay;
@@ -299,30 +356,7 @@ void BodyMetric::dietCalculation() const
     }
     std::cout << "Total calories consumed in a day: " << dietOfTheDay.getCalories() << std::endl;
 
-    /*if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
-    {
-        std::cout << "Calorie intake not within recommended limit for gender.\n";
-
-        if (getGender() == "F")
-        {
-            if (totalCalories < 1200)
-                std::cout << "Suggestion: Add another snack.\n";
-            else
-                std::cout << "Suggestion: Remove high-calorie item.\n";
-        }
-        else
-        {
-            if (totalCalories < 1500)
-                std::cout << "Suggestion: Add a heavier lunch.\n";
-            else
-                std::cout << "Suggestion: Replace dinner with something lighter.\n";
-        }
-    }
-    else
-    {
-        std::cout << "Calorie intake is appropriate for gender.\n";
-    }*/
-
+    // Give suggestion based on the total calories consumed
     if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
     {
         std::cout << "Calorie intake not within recommended limit.\n";
@@ -346,7 +380,7 @@ void BodyMetric::dietCalculation() const
         }
         else
         {
-            if (calculateBMR() > 1200)
+            if (calculateBMR() > 1500)
             {
                 if (totalCalories < calculateBMR())
                     std::cout << "Suggestion: Add another snack.\n";
@@ -355,7 +389,7 @@ void BodyMetric::dietCalculation() const
             }
             else
             {
-                if (totalCalories < 1200)
+                if (totalCalories < 1500)
                     std::cout << "Suggestion: Add another snack.\n";
                 else
                     std::cout << "Suggestion: Remove high-calorie item.\n";
@@ -368,9 +402,11 @@ void BodyMetric::dietCalculation() const
     }
 }
 
+/*
+    Update the profile information such as name, age, weight, height and goal
+*/
 void BodyMetric::updateProfile()
 {
-    // Ezra 20 M 70.0 1.73 lose
     int choice;
 
     while (choice != 6)
@@ -387,6 +423,7 @@ void BodyMetric::updateProfile()
         std::cin >> choice;
         switch (choice)
         {
+        //  Update name
         case 1:
         {
             std::string name;
@@ -396,6 +433,7 @@ void BodyMetric::updateProfile()
             setName(name);
             break;
         }
+        //  Update age
         case 2:
         {
             int age;
@@ -411,6 +449,7 @@ void BodyMetric::updateProfile()
             setAge(age);
             break;
         }
+        //  Update weight
         case 3:
         {
             double weight;
@@ -426,6 +465,7 @@ void BodyMetric::updateProfile()
             setWeight(weight);
             break;
         }
+        //  Update height
         case 4:
         {
             double height;
@@ -441,6 +481,7 @@ void BodyMetric::updateProfile()
             setHeight(height);
             break;
         }
+        //  Update goal
         case 5:
         {
             std::string goal;
@@ -469,12 +510,17 @@ void BodyMetric::updateProfile()
     return;
 }
 
+/*
+    Estimate calories intake based on BMR and TDEE
+*/
 void BodyMetric::estimateCaloriesIntake() const
 {
+    // Show the goal and bmi of user
     std::cout << "------------ Estimate Calories Intake ------------" << std::endl;
     std::cout << "Your goal is: " << goalType << std::endl;
     std::cout << "Your BMI is: " << calculateBMI() << std::endl;
     std::cout << std::endl;
+    // Determine daily activity level of user
     int activityLevel = 0;
     std::cout << "------------ Daily Activity Level ------------" << std::endl;
     std::cout << "1. Sedentary: little or no exercise" << std::endl;
@@ -490,6 +536,7 @@ void BodyMetric::estimateCaloriesIntake() const
         std::cin >> activityLevel;
     }
 
+    // Calculation of TDEE
     double tdee = 0.0;
     if (activityLevel == 1)
     {
@@ -512,6 +559,7 @@ void BodyMetric::estimateCaloriesIntake() const
         tdee = calculateBMR() * 1.9;
     }
 
+    // Adjust TDEE based on goal and gender
     if (getGoalType() == "lose")
     {
         tdee -= 500;
@@ -534,6 +582,9 @@ void BodyMetric::estimateCaloriesIntake() const
     std::cout << std::endl;
 }
 
+/*
+    Generate workout plan by considering goal and gender
+*/
 void BodyMetric::generateWorkoutPlan() const
 {
     /*
@@ -542,14 +593,21 @@ void BodyMetric::generateWorkoutPlan() const
     Maintain	200–300 kcal	        250–400 kcal
     Gain	    ≤ 200 kcal	            ≤ 250 kcal
     */
+
+    // Display goal and bmi
     std::cout << "------------ Daily Workout Plan ------------" << std::endl;
     std::cout << "Your goal is: " << goalType << std::endl;
     std::cout << "Your BMI is: " << calculateBMI() << std::endl;
 
+    // Array to store duration
     int duration[3] = {10, 20, 30};
+
+    // Variable min and max target burn and workout num is initialized
     int maxTargetBurn = 0;
     int minTargetBurn = 0;
     int workoutNum = 0;
+
+    // Adjust the min and maximum target burned and number of workout
     if (goalType == "lose")
     {
         if (getGender() == "F")
@@ -594,6 +652,7 @@ void BodyMetric::generateWorkoutPlan() const
     }
 
     int caloriesBurned = 0;
+    // Dynamic allocate arrays to store workout index and corresponding duration
     int *ptrWorkoutIndex = new int[workoutNum];
     int *ptrWorkoutDuration = new int[workoutNum];
     std::cout << std::setw(20) << "Workout Type" << std::setw(20) << "Duration (min)" << std::setw(20) << "Calories Burned" << std::endl;
@@ -621,6 +680,9 @@ void BodyMetric::generateWorkoutPlan() const
 
     std::cout << std::endl;
 
+    // Clear the allocated memory
     delete[] ptrWorkoutIndex;
+    delete[] ptrWorkoutDuration;
     ptrWorkoutIndex = nullptr;
+    ptrWorkoutDuration = nullptr;
 }

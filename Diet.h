@@ -7,10 +7,11 @@ class Diet
 private:
     std::string mealType; // e.g., breakfast, lunch, dinner
     std::string food;     // e.g., salad, chicken, rice
-    int calories;         // calories in the food item
+    int calories;         // calories of the food
 public:
     Diet();
     Diet(std::string, std::string, int);
+
     std::string getMealType() const;
     std::string getFood() const;
     int getCalories() const;
