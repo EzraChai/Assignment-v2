@@ -11,22 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y clang-tidy cppcheck g++
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-tidy cppcheck g++
 
-    - name: Compile All C++ Files
-      run: |
-        g++ -Wall -Werror -o main *.cpp
+      - name: Compile All C++ Files
+        run: |
+          g++ -Wall -Werror -o main *.cpp
 
-    - name: Run clang-tidy for Code Refactoring Suggestions
-      run: |
-        clang-tidy *.cpp -- -std=c++17
+      - name: Run clang-tidy for Code Refactoring Suggestions
+        run: |
+          clang-tidy *.cpp -- -std=c++17
 
-    - name: Run cppcheck for Static Analysis
-      run: |
-        cppcheck --enable=all --inconclusive --std=c++17 --force .
+      - name: Run cppcheck for Static Analysis
+        run: |
+          cppcheck --enable=all --inconclusive --std=c++17 --force .
