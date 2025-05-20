@@ -157,7 +157,6 @@ int main()
             std::cout << "Invalid selection, please try again." << std::endl;
         }
     }
-
     userFile.open("userInfo.txt", std::ios::out);
     if (userFile)
     {

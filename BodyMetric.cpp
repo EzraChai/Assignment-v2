@@ -150,8 +150,13 @@ void BodyMetric::loadWorkoutsAndDietPlans()
 /*
     Generate daily meal plans based on calories needed
 */
-void BodyMetric::generateDailyMealsPlan() const
+void BodyMetric::generateDailyMealsPlan()
 {
+
+    if (getActivityLevel() == 0)
+    {
+        promptUserForActivityLevel();
+    }
     int breakfastIndex[2] = {0, 4};
     int lunchIndex[2] = {1, 5};
     int dinnerIndex[2] = {2, 6};
@@ -159,8 +164,21 @@ void BodyMetric::generateDailyMealsPlan() const
 
     int generatedList[4] = {0};
     Diet totalDiet = Diet();
-    while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
-           (getGender() == "F" && totalDiet.getCalories() < 1200))
+    double tdee = calculateTDEE();
+    // Adjust TDEE based on goal and gender
+    double minCalories = 0;
+    if (getGender() == "M")
+        minCalories = 1500;
+    else if (getGender() == "F")
+        minCalories = 1200;
+
+    if (tdee < minCalories)
+        tdee = minCalories;
+
+    // while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
+    //        (getGender() == "F" && totalDiet.getCalories() < 1200))
+    // TODO: Change the algorithm to generate the meal plan based on the TDEE
+    while (totalDiet.getCalories() < tdee)
     {
         // generate the meals randomly
         totalDiet = Diet();
@@ -203,13 +221,13 @@ std::string BodyMetric::getGoalType() const
 /*
     Check if the total calories burned is valid based on the gender
 */
-bool BodyMetric::isBurnValidForGender(std::string gender, int totalcaloriesBurned) const
+bool BodyMetric::isBurnValidForGender(int totalcaloriesBurned) const
 {
-    if (gender == "F")
+    if (getGender() == "F")
     {
         return totalcaloriesBurned <= 400;
     }
-    else if (gender == "M")
+    else if (getGender() == "M")
     {
         return totalcaloriesBurned <= 500;
     }
@@ -268,7 +286,7 @@ void BodyMetric::workoutCalculation() const
 
     std::cout << "Total Calories Burned in a day: " << totalCaloriesBurned << std::endl;
 
-    if (isBurnValidForGender(getGender(), totalCaloriesBurned))
+    if (isBurnValidForGender(totalCaloriesBurned))
     {
         std::cout << "Workout calories burned is within daily safe limit." << std::endl;
     }
@@ -282,25 +300,31 @@ void BodyMetric::workoutCalculation() const
 /*
     Check if the total calories consumed is valid based on the gender and BMR
 */
-bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) const
+bool BodyMetric::isValidDailyCalories(int totalCalories) const
 {
-    if (gender == "F")
+    double tdee = calculateTDEE();
+    // Adjust TDEE based on goal and gender
+    if (getGoalType() == "lose")
     {
-        if (calculateBMR() >= 1200)
-        {
-            return totalCalories >= calculateBMR();
-        }
-        return totalCalories >= 1200;
+        tdee -= 500;
     }
+    else if (getGoalType() == "gain")
+    {
+        tdee += 500;
+    }
+    // Set minimum calories based on gender
+    double minCalories = 0;
+    if (getGender() == "M")
+        minCalories = 1500;
+    else if (getGender() == "F")
+        minCalories = 1200;
+    else
+        return false; // Invalid gender
 
-    if (gender == "M")
-    {
-        if (calculateBMR() >= 1500)
-        {
-            return totalCalories >= calculateBMR();
-        }
-        return totalCalories >= calculateBMR();
-    }
+    if (tdee < minCalories)
+        tdee = minCalories;
+
+    return totalCalories >= tdee;
 
     return false;
 }
@@ -308,10 +332,16 @@ bool BodyMetric::isValidDailyCalories(std::string gender, int totalCalories) con
     Calculate diet calories consumed
     and check if it is valid based on the gender and BMR
 */
-void BodyMetric::dietCalculation() const
+void BodyMetric::dietCalculation()
 {
+
     int dietCount = 0;
     int totalCalories = 0;
+
+    if (getActivityLevel() == 0)
+    {
+        promptUserForActivityLevel();
+    }
 
     std::cout << "------------ Diet Calculation ------------" << std::endl;
     std::cout << std::setw(8) << "Meal" << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
@@ -356,16 +386,35 @@ void BodyMetric::dietCalculation() const
     }
     std::cout << "Total calories consumed in a day: " << dietOfTheDay.getCalories() << std::endl;
 
+    double tdee = calculateTDEE();
+    // Adjust TDEE based on goal and gender
+    if (getGoalType() == "lose")
+    {
+        tdee -= 500;
+    }
+    else if (getGoalType() == "gain")
+    {
+        tdee += 500;
+    }
+    if (getGender() == "M" && tdee < 1500)
+    {
+        tdee = 1500;
+    }
+    else if (getGender() == "F" && tdee < 1200)
+    {
+        tdee = 1200;
+    }
+
     // Give suggestion based on the total calories consumed
-    if (!isValidDailyCalories(getGender(), dietOfTheDay.getCalories()))
+    if (!isValidDailyCalories(dietOfTheDay.getCalories()))
     {
         std::cout << "Calorie intake not within recommended limit.\n";
 
         if (getGender() == "F")
         {
-            if (calculateBMR() > 1200)
+            if (tdee > 1200)
             {
-                if (totalCalories < calculateBMR())
+                if (totalCalories < tdee)
                     std::cout << "Suggestion: Add another snack.\n";
                 else
                     std::cout << "Suggestion: Remove high-calorie item.\n";
@@ -380,9 +429,9 @@ void BodyMetric::dietCalculation() const
         }
         else
         {
-            if (calculateBMR() > 1500)
+            if (tdee > 1500)
             {
-                if (totalCalories < calculateBMR())
+                if (totalCalories < tdee)
                     std::cout << "Suggestion: Add another snack.\n";
                 else
                     std::cout << "Suggestion: Remove high-calorie item.\n";
@@ -513,7 +562,7 @@ void BodyMetric::updateProfile()
 /*
     Estimate calories intake based on BMR and TDEE
 */
-void BodyMetric::estimateCaloriesIntake() const
+void BodyMetric::estimateCaloriesIntake()
 {
     // Show the goal and bmi of user
     std::cout << "------------ Estimate Calories Intake ------------" << std::endl;
@@ -521,43 +570,12 @@ void BodyMetric::estimateCaloriesIntake() const
     std::cout << "Your BMI is: " << calculateBMI() << std::endl;
     std::cout << std::endl;
     // Determine daily activity level of user
-    int activityLevel = 0;
-    std::cout << "------------ Daily Activity Level ------------" << std::endl;
-    std::cout << "1. Sedentary: little or no exercise" << std::endl;
-    std::cout << "2. Lightly Active: light exercise/sports 1-3 days/week" << std::endl;
-    std::cout << "3. Moderately Active: moderate exercise/sports 3-5 days/week" << std::endl;
-    std::cout << "4. Very Active: hard exercise/sports 6-7 days a week" << std::endl;
-    std::cout << "5. Super Active: very hard exercise & physical job or 2x training" << std::endl;
-    std::cout << "Select your activity level (1-5): ";
-    std::cin >> activityLevel;
-    while (activityLevel < 1 || activityLevel > 5)
+    if (getActivityLevel() == 0)
     {
-        std::cout << "Invalid choice. Please select a valid activity level (1-5): ";
-        std::cin >> activityLevel;
+        promptUserForActivityLevel();
     }
 
-    // Calculation of TDEE
-    double tdee = 0.0;
-    if (activityLevel == 1)
-    {
-        tdee = calculateBMR() * 1.2;
-    }
-    else if (activityLevel == 2)
-    {
-        tdee = calculateBMR() * 1.375;
-    }
-    else if (activityLevel == 3)
-    {
-        tdee = calculateBMR() * 1.55;
-    }
-    else if (activityLevel == 4)
-    {
-        tdee = calculateBMR() * 1.725;
-    }
-    else if (activityLevel == 5)
-    {
-        tdee = calculateBMR() * 1.9;
-    }
+    double tdee = calculateTDEE();
 
     // Adjust TDEE based on goal and gender
     if (getGoalType() == "lose")

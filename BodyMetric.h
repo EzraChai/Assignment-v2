@@ -23,21 +23,21 @@ public:
     void createBodyMetric(std::string);
     std::string getGoalType() const;
 
-    void estimateCaloriesIntake() const;
+    void estimateCaloriesIntake();
 
     void displayProfileInfo() const;
 
     void loadWorkoutsAndDietPlans();
 
-    void generateDailyMealsPlan() const;
+    void generateDailyMealsPlan();
 
     void generateWorkoutPlan() const;
 
-    bool isBurnValidForGender(std::string, int) const;
-    bool isValidDailyCalories(std::string, int) const;
+    bool isBurnValidForGender(int) const;
+    bool isValidDailyCalories(int) const;
 
     void workoutCalculation() const;
-    void dietCalculation() const;
+    void dietCalculation();
 
     void updateProfile();
 };

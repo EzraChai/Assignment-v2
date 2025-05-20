@@ -10,6 +10,7 @@ private:
     std::string gender;
     double weight;
     double height;
+    int activityLevel;
 
 public:
     Person();
@@ -27,11 +28,14 @@ public:
     std::string getGender() const;
     double getWeight() const;
     double getHeight() const;
+    int getActivityLevel() const;
 
     double calculateBMI() const;
     void displayPerson() const;
 
     double calculateBMR() const;
+    double calculateTDEE() const;
+    void promptUserForActivityLevel();
 
     friend void displayComparisonBetweenPerson(const Person &person1, const Person &person2);
 };

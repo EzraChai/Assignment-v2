@@ -6,12 +6,12 @@
 /*
     Default constructor
 */
-Person::Person() : name(""), age(1), gender(""), weight(0.0), height(0.0) {}
+Person::Person() : name(""), age(1), gender(""), weight(0.0), height(0.0), activityLevel(0) {}
 
 /*
     Overloading constructor
 */
-Person::Person(std::string n, int a, std::string ge, double w, double h) : name(n), age(a), gender(ge), weight(w), height(h)
+Person::Person(std::string n, int a, std::string ge, double w, double h) : name(n), age(a), gender(ge), weight(w), height(h), activityLevel(0)
 {
 }
 
@@ -101,6 +101,14 @@ double Person::getHeight() const
 }
 
 /*
+    Get the activity level of the person
+*/
+int Person::getActivityLevel() const
+{
+    return activityLevel;
+}
+
+/*
     Calculate the BMI of the person
 */
 double Person::calculateBMI() const
@@ -126,6 +134,64 @@ double Person::calculateBMR() const
         return 10 * weight + 6.25 * (height * 100) - 5 * age - 161; // Calculation BMR for Women
     }
     return 0.0;
+}
+
+/*
+    Calculate the TDEE of the person
+*/
+double Person::calculateTDEE() const
+{
+    double bmr = calculateBMR();
+    if (activityLevel == 1)
+    {
+        return bmr * 1.2; // Sedentary
+    }
+    else if (activityLevel == 2)
+    {
+        return bmr * 1.375; // Lightly active
+    }
+    else if (activityLevel == 3)
+    {
+        return bmr * 1.55; // Moderately active
+    }
+    else if (activityLevel == 4)
+    {
+        return bmr * 1.725; // Very active
+    }
+    else if (activityLevel == 5)
+    {
+        return bmr * 1.9; // Super active
+    }
+    return bmr; // Default to BMR if no activity level is set
+}
+
+/*
+    Prompt user for activity level
+*/
+void Person::promptUserForActivityLevel()
+{
+    int activityLevel;
+
+    // Display activity level options
+    std::cout << "\n------------ Activity Level ------------" << std::endl;
+    std::cout << "Select your activity level (1-5):" << std::endl;
+    std::cout << "1. Sedentary (little or no exercise)" << std::endl;
+    std::cout << "2. Lightly active (light exercise/sports 1-3 days/week)" << std::endl;
+    std::cout << "3. Moderately active (moderate exercise/sports 3-5 days/week)" << std::endl;
+    std::cout << "4. Very active (hard exercise/sports 6-7 days a week)" << std::endl;
+    std::cout << "5. Super active (very hard exercise & physical job or 2x training)" << std::endl;
+    std::cout << "Please enter your activity level: ";
+    std::cin >> activityLevel;
+
+    // Validate activity level input
+    while (activityLevel < 1 || activityLevel > 5)
+    {
+        std::cout << "Invalid activity level. Please enter a valid activity level: ";
+        std::cin >> activityLevel;
+    }
+    std::cout << std::endl;
+    // Set the activity level
+    this->activityLevel = activityLevel;
 }
 
 /*
