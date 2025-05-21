@@ -157,15 +157,45 @@ void BodyMetric::generateDailyMealsPlan()
     {
         promptUserForActivityLevel();
     }
-    int breakfastIndex[2] = {0, 4};
-    int lunchIndex[2] = {1, 5};
-    int dinnerIndex[2] = {2, 6};
-    int snackIndex[2] = {3, 7};
+    // int breakfastIndex[2] = {0, 4};
+    // int lunchIndex[2] = {1, 5};
+    // int dinnerIndex[2] = {2, 6};
+    // int snackIndex[2] = {3, 7};
+    int mealsIndex[MAX_DIETS] = {0, 4, 1, 5, 2, 6, 3, 7};
 
-    int generatedList[4] = {0};
-    Diet totalDiet = Diet();
     double tdee = calculateTDEE();
-    // Adjust TDEE based on goal and gender
+    if (getGoalType() == "lose")
+    {
+        tdee -= 500;
+    }
+    else if (getGoalType() == "gain")
+    {
+        tdee += 500;
+    }
+
+    // If tdee <= 1450, then 3 meals is enough to generate
+    int totalMeals = 4;
+    if (tdee <= 1450)
+    {
+        totalMeals = 3;
+    }
+
+    // If tdee > 1700 and tdee < 2300, then 4 meals is enough to generate
+    double totalTdeeLeft = tdee - 1700;
+    if (totalTdeeLeft > 0)
+    {
+        totalMeals++;
+        // If tdee > 2300, depending on the tdee, it add more meals accordingly
+        while (totalTdeeLeft > 600)
+        {
+            totalTdeeLeft -= 600;
+            totalMeals++;
+        }
+    }
+
+    int generatedList[totalMeals] = {0};
+    Diet totalDiet = Diet();
+    // Adjust TDEE based on goal and gender since it cannot be less than 1200(female) or 1500(male)
     double minCalories = 0;
     if (getGender() == "M")
         minCalories = 1500;
@@ -175,28 +205,34 @@ void BodyMetric::generateDailyMealsPlan()
     if (tdee < minCalories)
         tdee = minCalories;
 
-    // while ((getGender() == "M" && totalDiet.getCalories() < 1500) ||
-    //        (getGender() == "F" && totalDiet.getCalories() < 1200))
-    // TODO: Change the algorithm to generate the meal plan based on the TDEE
     while (totalDiet.getCalories() < tdee)
     {
         // generate the meals randomly
         totalDiet = Diet();
-        generatedList[0] = breakfastIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[0]];
-        generatedList[1] = lunchIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[1]];
-        generatedList[2] = dinnerIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[2]];
-        generatedList[3] = snackIndex[rand() % 2];
-        totalDiet = totalDiet + diet[generatedList[3]];
+        for (int i = 0; i < totalMeals; i++)
+        {
+            if (i < 4)
+            {
+                generatedList[i] = mealsIndex[rand() % 2 + (i * 2)];
+                totalDiet = totalDiet + diet[generatedList[i]];
+            }
+            else
+            {
+                generatedList[i] = mealsIndex[rand() % MAX_DIETS];
+                totalDiet = totalDiet + diet[generatedList[i]];
+            }
+        }
     }
 
     // To display meal plan generated
     std::cout << "------------ Daily Meal Plan ------------" << std::endl;
     std::cout << std::setw(20) << "Meal Type" << std::setw(30) << "Food" << std::setw(20) << "Calories" << std::endl;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < totalMeals; i++)
     {
+        if (i == 4)
+        {
+            std::cout << std::setw(20) << "Additional meal: " << std::endl;
+        }
         std::cout << std::setw(20) << diet[generatedList[i]].getMealType() << std::setw(30) << diet[generatedList[i]].getFood() << std::setw(20) << diet[generatedList[i]].getCalories() << std::endl;
     }
     std::cout << "Total calories: " << totalDiet.getCalories() << std::endl;

@@ -201,7 +201,10 @@ void Person::displayPerson() const
 {
     std::cout << "Name: " << name << std::endl;
     std::cout << "Age: " << age << std::endl;
-    std::cout << "Gender: " << gender << std::endl;
+    if (gender == "M")
+        std::cout << "Gender : Male" << std::endl;
+    else if (gender == "F")
+        std::cout << "Gender: Female" << std::endl;
     std::cout << "Weight: " << std::fixed << std::setprecision(1) << weight << "kg" << std::endl;
     std::cout << "Height: " << std::fixed << std::setprecision(2) << height << "m" << std::endl;
     std::cout << "BMI: " << std::fixed << std::setprecision(2) << calculateBMI() << std::endl;
