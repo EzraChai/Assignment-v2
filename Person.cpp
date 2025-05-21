@@ -33,6 +33,10 @@ void Person::setName(std::string n)
 */
 void Person::setAge(int a)
 {
+    if (a <= 0 || a > 150)
+    {
+        return;
+    }
     age = a;
 }
 
@@ -41,6 +45,10 @@ void Person::setAge(int a)
 */
 void Person::setGender(std::string ge)
 {
+    if (ge != "M" && ge != "F")
+    {
+        return;
+    }
     gender = ge;
 }
 
@@ -49,6 +57,10 @@ void Person::setGender(std::string ge)
 */
 void Person::setWeight(double w)
 {
+    if (w <= 0)
+    {
+        return;
+    }
     weight = w;
 }
 
@@ -57,6 +69,10 @@ void Person::setWeight(double w)
 */
 void Person::setHeight(double h)
 {
+    if (h <= 0 || h > 10.0)
+    {
+        return;
+    }
     height = h;
 }
 
