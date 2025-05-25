@@ -8,7 +8,7 @@
 /*
     Function prototype of the friend function
 */
-void displayComparisonBetweenPerson(const Person &person1, const Person &person2, const BodyMetric &bodyMetric1, const BodyMetric &bodyMetric2);
+void displayComparisonBetweenPerson(const Person &person1, const Person &person2);
 
 int main()
 {
@@ -144,8 +144,7 @@ int main()
                           << std::endl;
                 break;
             }
-            displayComparisonBetweenPerson(bodymetrics[personIndex], bodymetrics[otherIndex],
-                                           bodymetrics[personIndex], bodymetrics[otherIndex]);
+            displayComparisonBetweenPerson(bodymetrics[personIndex], bodymetrics[otherIndex]);
             break;
         }
         case 8:
@@ -185,26 +184,21 @@ int main()
 /*
   Comparison on goal type, weight, height and BMI between other Person
 */
-void displayComparisonBetweenPerson(const Person &person1, const Person &person2, const BodyMetric &bodyMetric1, const BodyMetric &bodyMetric2)
+void displayComparisonBetweenPerson(const Person &person1, const Person &person2)
 {
     std::cout << "\n--------------------- Health Comparison ---------------------" << std::endl;
-    std::cout << std::setw(15) << "Person" << std::setw(15) << person1.getName() << std::setw(15) << person2.getName() << std::endl;
-    std::cout << std::setw(15) << "Goal Type" << std::setw(15) << bodyMetric1.getGoalType() << std::setw(15) << bodyMetric2.getGoalType() << std::endl;
-    std::cout << "-------------------------------------------------------------" << std::endl;
-    std::cout << std::setw(15) << "Parameter" << std::setw(15) << person1.getName() << std::setw(15) << person2.getName() << std::setw(15) << "Difference" << std::endl;
-
-    // Compare goal types
+    std::cout << std::setw(15) << "Parameter" << std::setw(15) << person1.name << std::setw(15) << person2.name << std::setw(15) << "Difference" << std::endl;
 
     // Compare weights
-    double weightDiff = std::abs(person1.getWeight() - person2.getWeight());
+    double weightDiff = std::abs(person1.weight - person2.weight);
     std::cout << std::setw(15) << "Weight (kg)" << std::setw(15) << std::fixed << std::setprecision(1)
-              << person1.getWeight() << std::setw(15) << person2.getWeight()
+              << person1.weight << std::setw(15) << person2.weight
               << std::setw(15) << weightDiff << std::endl;
 
     // Compare heights
-    double heightDiff = std::abs(person1.getHeight() - person2.getHeight());
+    double heightDiff = std::abs(person1.height - person2.height);
     std::cout << std::setw(15) << "Height (m)" << std::setw(15) << std::fixed << std::setprecision(2)
-              << person1.getHeight() << std::setw(15) << person2.getHeight()
+              << person1.height << std::setw(15) << person2.height
               << std::setw(15) << heightDiff << std::endl;
 
     // Compare BMI

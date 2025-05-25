@@ -2,8 +2,6 @@
 #define PERSON_H
 #include <string>
 
-class BodyMetric; // Forward declaration for friend function
-
 class Person
 {
 private:
@@ -39,7 +37,7 @@ public:
     double calculateTDEE() const;
     void promptUserForActivityLevel();
 
-    friend void displayComparisonBetweenPerson(const Person &, const Person &, const BodyMetric &, const BodyMetric &);
+    friend void displayComparisonBetweenPerson(const Person &, const Person &);
 };
 
 #endif
