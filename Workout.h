@@ -12,9 +12,10 @@ private:
 public:
     Workout();
     Workout(std::string, int, int);
+    ~Workout();
 
     void displayWorkout(int) const;
-    std::string getWorkoutType() const; 
+    std::string getWorkoutType() const;
     int getCaloriesBurnedPerMinute() const;
 };
 

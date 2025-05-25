@@ -11,6 +11,7 @@ private:
 public:
     Diet();
     Diet(std::string, std::string, int);
+    ~Diet();
 
     std::string getMealType() const;
     std::string getFood() const;

@@ -6,7 +6,9 @@
 /*
     Default constructor
 */
-Person::Person() : name(""), age(1), gender(""), weight(0.0), height(0.0), activityLevel(0) {}
+Person::Person() : name(""), age(1), gender(""), weight(0.0), height(0.0), activityLevel(0)
+{
+}
 
 /*
     Overloading constructor

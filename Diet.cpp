@@ -4,12 +4,19 @@
 /*
     Default constructor
 */
-Diet::Diet() : mealType(""), food(""), calories(0) {}
+Diet::Diet() : mealType(""), food(""), calories(0)
+{
+}
 
 /*
     Overloading constructor
 */
 Diet::Diet(std::string mt, std::string f, int c) : mealType(mt), food(f), calories(c) {}
+
+/*
+    Destructor
+*/
+Diet::~Diet() {}
 
 /*
     Display the details of the diet

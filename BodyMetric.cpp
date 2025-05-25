@@ -7,7 +7,9 @@
 /*
     Default constructor
 */
-BodyMetric::BodyMetric() : Person(), goalType("") {}
+BodyMetric::BodyMetric() : Person(), goalType("")
+{
+}
 
 /*
     Overloading constructor
@@ -16,6 +18,11 @@ BodyMetric::BodyMetric(std::string n, int a, std::string ge, double w, double h,
 {
     loadWorkoutsAndDietPlans();
 }
+
+/*
+    Destructor
+*/
+BodyMetric::~BodyMetric() {}
 
 /*
     Create new record for body metric
@@ -28,6 +35,7 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Age: ";
     std::cin >> age;
 
+    // Validate Age input
     while (age <= 0 || age > 120)
     {
         std::cout << "Invalid age. Please enter a valid age.";
@@ -40,6 +48,7 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Gender (male/female): ";
     std::cin >> gender;
 
+    // Validate gender input
     while (gender != "male" && gender != "female")
     {
         std::cout << "Invalid gender. Please enter only male or female.";
@@ -75,7 +84,7 @@ void BodyMetric::createBodyMetric(std::string name)
     std::cout << "Goal Type (lose, maintain, gain): ";
     std::cin >> goalType;
 
-    // validate gender input
+    // validate goal input
     while (goalType != "lose" && goalType != "maintain" && goalType != "gain")
     {
         std::cout << "Invalid goal type. Please enter only lose, maintain or gain.";
@@ -157,12 +166,11 @@ void BodyMetric::generateDailyMealsPlan()
     {
         promptUserForActivityLevel();
     }
-    // int breakfastIndex[2] = {0, 4};
-    // int lunchIndex[2] = {1, 5};
-    // int dinnerIndex[2] = {2, 6};
-    // int snackIndex[2] = {3, 7};
+
+    // Diets according their index
     int mealsIndex[MAX_DIETS] = {0, 4, 1, 5, 2, 6, 3, 7};
 
+    // Find TDEE and adjust based on Goal Type
     double tdee = calculateTDEE();
     if (getGoalType() == "lose")
     {
@@ -249,6 +257,9 @@ void BodyMetric::displayProfileInfo() const
     std::cout << std::endl;
 }
 
+/*
+    Get Goal Type
+*/
 std::string BodyMetric::getGoalType() const
 {
     return goalType;
@@ -292,7 +303,8 @@ void BodyMetric::workoutCalculation() const
     int workoutChoice[workoutCount];
     int workoutDuration[workoutCount];
 
-    std::cout << "Enter the workout indexs (1 to " << MAX_WORKOUTS << "): " << std::endl;
+    // input the workout indices
+    std::cout << "Enter the workout indices (1 to " << MAX_WORKOUTS << "): " << std::endl;
     for (int i = 0; i < workoutCount; i++)
     {
         std::cin >> workoutChoice[i];
@@ -642,10 +654,10 @@ void BodyMetric::estimateCaloriesIntake()
 void BodyMetric::generateWorkoutPlan() const
 {
     /*
-    Goal	    Target Burn (Female)	Target Burn (Male)
-    Lose	    350–400 kcal	        450–500 kcal
-    Maintain	200–300 kcal	        250–400 kcal
-    Gain	    ≤ 200 kcal	            ≤ 250 kcal
+    Goal        Target Burn (Female)    Target Burn (Male)
+    Lose        350–400 kcal            450–500 kcal
+    Maintain    200–300 kcal            250–400 kcal
+    Gain        ≤ 200 kcal              ≤ 250 kcal
     */
 
     // Display goal and bmi
@@ -706,11 +718,13 @@ void BodyMetric::generateWorkoutPlan() const
     }
 
     int caloriesBurned = 0;
+
     // Dynamic allocate arrays to store workout index and corresponding duration
     int *ptrWorkoutIndex = new int[workoutNum];
     int *ptrWorkoutDuration = new int[workoutNum];
     std::cout << std::setw(20) << "Workout Type" << std::setw(20) << "Duration (min)" << std::setw(20) << "Calories Burned" << std::endl;
-    // Generate random workout plan
+
+    // Generate random workout plan randomly until the total calories burned is within the target burn range
     while (!(caloriesBurned >= minTargetBurn && caloriesBurned <= maxTargetBurn))
     {
         caloriesBurned = 0;
@@ -724,6 +738,7 @@ void BodyMetric::generateWorkoutPlan() const
             ptrWorkoutDuration[i] = duration[durationIndex];
         }
     }
+    // Display the workout plan
     for (int i = 0; i < workoutNum; i++)
     {
         int workoutIndex = ptrWorkoutIndex[i];
@@ -734,7 +749,7 @@ void BodyMetric::generateWorkoutPlan() const
 
     std::cout << std::endl;
 
-    // Clear the allocated memory
+    // Clear all the allocated memory
     delete[] ptrWorkoutIndex;
     delete[] ptrWorkoutDuration;
     ptrWorkoutIndex = nullptr;

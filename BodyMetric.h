@@ -19,6 +19,7 @@ private:
 public:
     BodyMetric();
     BodyMetric(std::string, int, std::string, double, double, std::string);
+    ~BodyMetric();
 
     void createBodyMetric(std::string);
     std::string getGoalType() const;

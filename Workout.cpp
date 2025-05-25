@@ -12,6 +12,12 @@ Workout::Workout() : workoutType(""), intensity(0), caloriesBurnedPerMinute(0) {
     Overloading constructor
 */
 Workout::Workout(std::string wt, int i, int c) : workoutType(wt), intensity(i), caloriesBurnedPerMinute(c) {}
+
+/*
+    Destructor
+*/
+Workout::~Workout() {}
+
 /*
     Display workout type based on the index in the workout plans
 */
